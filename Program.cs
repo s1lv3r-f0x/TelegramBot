@@ -13,8 +13,6 @@ namespace Telegram_Bot
             telegramBot = new TelegramBotClient(token);
             telegramBot.StartReceiving();
             telegramBot.OnMessage += TelegramBot_OnMessage;
-            Console.ReadKey();
-            telegramBot.StopReceiving();
         }
 
         private static async void TelegramBot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)

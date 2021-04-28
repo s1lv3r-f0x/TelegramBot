@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\yatin\\source\\repos\\Telegram_Bot\\Telegram_Bot.csproj": {}
+    "C:\\Users\\yatin\\source\\repos\\TelegramBot\\Telegram_Bot.csproj": {}
   },
   "projects": {
-    "C:\\Users\\yatin\\source\\repos\\Telegram_Bot\\Telegram_Bot.csproj": {
+    "C:\\Users\\yatin\\source\\repos\\TelegramBot\\Telegram_Bot.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\yatin\\source\\repos\\Telegram_Bot\\Telegram_Bot.csproj",
+        "projectUniqueName": "C:\\Users\\yatin\\source\\repos\\TelegramBot\\Telegram_Bot.csproj",
         "projectName": "Telegram_Bot",
-        "projectPath": "C:\\Users\\yatin\\source\\repos\\Telegram_Bot\\Telegram_Bot.csproj",
+        "projectPath": "C:\\Users\\yatin\\source\\repos\\TelegramBot\\Telegram_Bot.csproj",
         "packagesPath": "C:\\Users\\yatin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\yatin\\source\\repos\\Telegram_Bot\\obj\\",
+        "outputPath": "C:\\Users\\yatin\\source\\repos\\TelegramBot\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\yatin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -38,6 +38,20 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[5.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.5, )"
+            },
             "Telegram.Bot": {
               "target": "Package",
               "version": "[15.7.1, )"

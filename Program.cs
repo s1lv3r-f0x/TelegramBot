@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
+using Microsoft.EntityFrameworkCore;
 using Telegram.Bot;
 
 
@@ -18,39 +21,49 @@ namespace Telegram_Bot
 
         private static async void TelegramBot_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
         {
-            var msg = e.Message;
-            if (msg.Text == "/subscribe")
+            var subscriber = new Subscriber
+                {Id = (int) e.Message.Chat.Id, Name = e.Message.Chat.FirstName, IsSubscribing = false};
+            using (var db = new Subscribers())
             {
-                using (var db = new Subscribers())
-                {
-                    if (db.SubscriberID is null)
-                    {
-                        db.SubscriberID.Add(msg.Chat.Id);
-                        db.SubscriberName.Add(msg.Chat.Username);
-                        db.Subscribe.Add(true);
-                        await telegramBot.SendTextMessageAsync(msg.Chat.Id, "Вы успепшно подписались на рассылку!");
-                        db.SaveChanges();
-                    }
-                    if (db.SubscriberID.Contains(msg.Chat.Id))
-                        await telegramBot.SendTextMessageAsync(msg.Chat.Id, "Вы уже подписаны!");
-                    else
-                    {
-                        await telegramBot.SendTextMessageAsync(msg.Chat.Id, "Фигня какая-то!");
-                    }
-                }
-                
-            }
+                db.Database.Migrate();
+                db.TSubscriber.Add(subscriber);
 
-            if (msg.Text == "/dbname")
-            {
-                using (var db = new Subscribers())
+                var msg = e.Message;
+                if (msg.Text == "/subscribe")
                 {
-                    foreach (var name in db.SubscriberName.ToArray())
+                    subscriber.IsSubscribing = true;
+                    db.TSubscriber.Update(subscriber);
+                    await telegramBot.SendTextMessageAsync(e.Message.Chat.Id, "Вы подписались!");
+                    Console.WriteLine("Кто-то подписался!");
+                    db.SaveChanges();
+                }
+
+                if (msg.Text == "/unsubscribe")
+                {
+                    subscriber.IsSubscribing = false;
+                    db.TSubscriber.Update(subscriber);
+                    await telegramBot.SendTextMessageAsync(e.Message.Chat.Id, "Вы отписались!");
+                    Console.WriteLine("Кто-то отписался!");
+                    db.SaveChanges();
+
+                }
+
+                if (msg.Text == @"\database")
+                {
+                    
+                    try
                     {
-                        await telegramBot.SendTextMessageAsync(msg.Chat.Id, name);
+                        await telegramBot.SendTextMessageAsync(e.Message.Chat.Id,
+                                db.TSubscriber.OrderBy(b => b.Name).First().ToString());
+                    }
+                    catch (Exception exception)
+                    { 
+                        Console.WriteLine(exception); 
+                        await telegramBot.SendTextMessageAsync(e.Message.Chat.Id, "Пока тут пусто");
                     }
                 }
             }
         }
     }
 }
+

@@ -23,45 +23,35 @@ namespace Telegram_Bot
         {
             var subscriber = new Subscriber
                 {Id = (int) e.Message.Chat.Id, Name = e.Message.Chat.FirstName, IsSubscribing = false};
+            var messageReader = new MessageReader(e.Message.Text);
             using (var db = new Subscribers())
             {
                 db.Database.Migrate();
                 db.TSubscriber.Add(subscriber);
-
                 var msg = e.Message;
                 if (msg.Text == "/subscribe")
                 {
-                    subscriber.IsSubscribing = true;
-                    db.TSubscriber.Update(subscriber);
-                    await telegramBot.SendTextMessageAsync(e.Message.Chat.Id, "Вы подписались!");
-                    Console.WriteLine("Кто-то подписался!");
-                    db.SaveChanges();
+                    Subscribed(e, subscriber, true);
+                    return;
                 }
-
                 if (msg.Text == "/unsubscribe")
                 {
-                    subscriber.IsSubscribing = false;
-                    db.TSubscriber.Update(subscriber);
-                    await telegramBot.SendTextMessageAsync(e.Message.Chat.Id, "Вы отписались!");
-                    Console.WriteLine("Кто-то отписался!");
-                    db.SaveChanges();
-
+                    Subscribed(e, subscriber, false);
+                    return;
                 }
+            }
+            await telegramBot.SendTextMessageAsync(e.Message.Chat.Id, messageReader.Message);
+        }
 
-                if (msg.Text == @"\database")
-                {
-                    
-                    try
-                    {
-                        await telegramBot.SendTextMessageAsync(e.Message.Chat.Id,
-                                db.TSubscriber.OrderBy(b => b.Name).First().ToString());
-                    }
-                    catch (Exception exception)
-                    { 
-                        Console.WriteLine(exception); 
-                        await telegramBot.SendTextMessageAsync(e.Message.Chat.Id, "Пока тут пусто");
-                    }
-                }
+        private static async void Subscribed(Telegram.Bot.Args.MessageEventArgs e, Subscriber subs, bool isSubscriber)
+        {
+            using (var db = new Subscribers())
+            {
+                subs.IsSubscribing = isSubscriber;
+                db.TSubscriber.Update(subs);
+                await telegramBot.SendTextMessageAsync(e.Message.Chat.Id, isSubscriber ? "Вы подписались!" : "Вы отписались(");
+                Console.WriteLine(isSubscriber ? "Кто-то подписался" : "Кто-то отписался");
+                db.SaveChanges();
             }
         }
     }

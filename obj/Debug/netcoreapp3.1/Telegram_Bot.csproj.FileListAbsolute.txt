@@ -70,3 +70,4 @@ C:\Users\yatin\source\repos\TelegramBot\bin\Debug\netcoreapp3.1\runtimes\win-x86
 C:\Users\yatin\source\repos\TelegramBot\bin\Debug\netcoreapp3.1\Humanizer.dll
 C:\Users\yatin\source\repos\TelegramBot\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\yatin\source\repos\TelegramBot\obj\Debug\netcoreapp3.1\Telegram_Bot.csproj.CoreCompileInputs.cache
+C:\Users\yatin\source\repos\TelegramBot\bin\Debug\netcoreapp3.1\Settings.job

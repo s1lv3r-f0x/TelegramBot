@@ -18,7 +18,7 @@ namespace Telegram_Bot
 
         public string Message;
 
-        public MessageReader(string command) => Message = commandsList.ContainsKey(command.ToLower()) ? 
+        public MessageReader(string command) => Message = command != null && commandsList.ContainsKey(command.ToLower()) ? 
             ReadMessageFromFiles(commandsList[command]) : "Неизвестная команда, возможно я добавлю ее чуть позже.";
 
         private string ReadMessageFromFiles(string path)
